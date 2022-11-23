@@ -1,0 +1,7 @@
+template: finx
+defaultName: ${DW_DEFAULT_NAME:-Stranger}
+
+server:
+  type: simple
+  rootPath: /api
+  applicationContextPath: /
