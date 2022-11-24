@@ -1,4 +1,4 @@
-package com.vn.jinx.service.dto;
+package com.vn.jinx.dto;
 
 import java.util.List;
 import lombok.AllArgsConstructor;

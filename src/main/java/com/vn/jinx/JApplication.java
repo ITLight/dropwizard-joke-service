@@ -1,8 +1,10 @@
 package com.vn.jinx;
 
 import com.codahale.metrics.health.HealthCheck;
+import com.vn.jinx.filter.RateLimitFilter;
 import com.vn.jinx.resources.JokeResource;
 import com.vn.jinx.service.JokeService;
+import com.vn.jinx.service.RateLimitService;
 import io.dropwizard.Application;
 import io.dropwizard.client.HttpClientBuilder;
 import io.dropwizard.setup.Bootstrap;
@@ -36,6 +38,8 @@ public class JApplication extends Application<JApplicationConfiguration> {
         return Result.healthy();
       }
     });
+
+    environment.jersey().register(new RateLimitFilter(new RateLimitService()));
 
     final CloseableHttpClient client = new HttpClientBuilder(environment).build(getName());
 

@@ -1,18 +1,13 @@
 package com.vn.jinx.service;
 
-import com.google.gson.JsonObject;
-import com.vn.jinx.service.dto.JokeDTO;
-import com.vn.jinx.service.dto.JokeDTO.Result;
+import com.vn.jinx.dto.JokeDTO;
+import com.vn.jinx.dto.JokeDTO.Result;
 import com.vn.jinx.util.JsonUtils;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.Invocation;
-import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.client.config.RequestConfig;
