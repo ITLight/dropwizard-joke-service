@@ -3,6 +3,7 @@ package com.vn.jinx.filter;
 import com.vn.jinx.api.JokeAPI;
 import com.vn.jinx.api.enumeration.ResponseEnum;
 import com.vn.jinx.service.RateLimitService;
+import com.vn.jinx.util.JsonUtils;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
@@ -27,13 +28,10 @@ public class RateLimitFilter implements ContainerRequestFilter {
   @Context private HttpServletRequest request;
 
   @Override
-  public void filter(ContainerRequestContext context) throws IOException {
+  public void filter(ContainerRequestContext context) {
     String search = request.getParameter("search");
-    Method method = resourceInfo.getResourceMethod();
 
-    log.info(search+method);
-
-    if (rateLimitService.isReachedQueryLimit(search)) {
+    if (search.length() >= 3 && rateLimitService.isReachedQueryLimit(JsonUtils.encodeURI(search))) {
       context.abortWith(
           Response.status(Status.TOO_MANY_REQUESTS)
               .entity(new JokeAPI(ResponseEnum.TOO_MANY_REQUEST, search))

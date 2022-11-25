@@ -16,28 +16,29 @@ public class RateLimitService {
   private static final Map<String, Bucket> bucketMap = new HashMap<>();
 
   public boolean isReachedQueryLimit(String search) {
+    String key = "empty_search";
+
 
     if(!Objects.isNull(search) && !search.isEmpty()) {
-      Bucket searchingBucket = bucketMap.get(search);
-
-      if(Objects.isNull(searchingBucket)) {
-        Refill refill = Refill.intervally(5, Duration.ofMinutes(1));
-        Bandwidth limit = Bandwidth.classic(5, refill);
-        Bucket bucket = Bucket4j.builder()
-            .addLimit(limit)
-            .build();
-
-        bucket.tryConsume(1L);
-
-        bucketMap.put(search, bucket);
-
-        return false;
-      }
-
-      return !searchingBucket.tryConsume(1L);
+      key = search;
     }
 
+    Bucket searchingBucket = bucketMap.get(key);
 
-    return true;
+    if(Objects.isNull(searchingBucket)) {
+      Refill refill = Refill.intervally(5, Duration.ofMinutes(1));
+      Bandwidth limit = Bandwidth.classic(5, refill);
+      Bucket bucket = Bucket4j.builder()
+          .addLimit(limit)
+          .build();
+
+      bucket.tryConsume(1L);
+
+      bucketMap.put(key, bucket);
+
+      return false;
+    }
+
+    return !searchingBucket.tryConsume(1L);
   }
 }

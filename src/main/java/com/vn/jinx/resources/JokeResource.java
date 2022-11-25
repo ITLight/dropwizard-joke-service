@@ -3,6 +3,7 @@ package com.vn.jinx.resources;
 import com.vn.jinx.api.JokeAPI;
 import com.vn.jinx.api.enumeration.ResponseEnum;
 import com.vn.jinx.service.JokeService;
+import com.vn.jinx.util.JsonUtils;
 import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -24,12 +25,17 @@ public class JokeResource {
 
   @GET
   @Path("/joke")
-  public Response fetchJoke(@QueryParam("search")String search) {
+  public Response fetchJoke(@QueryParam("search") String search) {
 
     JokeAPI res;
 
     try {
-      List<Object> data = jokeService.fetchJoke(search);
+      if (search.length() < 3)
+        return Response.status(Status.OK)
+            .entity(new JokeAPI(ResponseEnum.INVALID_SEARCH_TEXT, search))
+            .build();
+
+      List<Object> data = jokeService.fetchJoke(JsonUtils.encodeURI(search));
       res = new JokeAPI(search, data);
     } catch (Exception e) {
       log.error("Error while fetching jokes from {}, ex:", search, e);
@@ -38,5 +44,4 @@ public class JokeResource {
 
     return Response.status(Status.OK).entity(res).build();
   }
-
 }
