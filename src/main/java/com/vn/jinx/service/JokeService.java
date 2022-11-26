@@ -6,6 +6,7 @@ import com.vn.jinx.util.JsonUtils;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.ws.rs.core.MediaType;
 import lombok.RequiredArgsConstructor;
@@ -20,16 +21,19 @@ import org.apache.http.util.EntityUtils;
 @RequiredArgsConstructor
 public class JokeService {
 
+  private final String queryURL;
   private final CloseableHttpClient client;
 
-  public List<Object> fetchJoke(String search) throws IOException {
+  public List<String> fetchJoke(String search) throws IOException {
     int timeout = 30;
-    RequestConfig config = RequestConfig.custom()
-        .setConnectTimeout(timeout * 1000)
-        .setConnectionRequestTimeout(timeout * 1000)
-        .setSocketTimeout(timeout * 1000).build();
+    RequestConfig config =
+        RequestConfig.custom()
+            .setConnectTimeout(timeout * 1000)
+            .setConnectionRequestTimeout(timeout * 1000)
+            .setSocketTimeout(timeout * 1000)
+            .build();
 
-    HttpGet request = new HttpGet("https://api.chucknorris.io/jokes/search?query=" + search);
+    HttpGet request = new HttpGet(queryURL + search);
     request.setConfig(config);
     request.setHeader("content-type", MediaType.APPLICATION_JSON);
 
@@ -38,14 +42,20 @@ public class JokeService {
     try {
       JokeDTO jokeDTO = JsonUtils.parse(EntityUtils.toString(response.getEntity()), JokeDTO.class);
 
-      return jokeDTO.getResult().stream().map(Result::getValue).collect(Collectors.toList());
+      return jokeDTO.getResult().stream()
+          .map(Result::getValue)
+          .filter(str -> filterFullMatchOfKeyWord(search, str))
+          .collect(Collectors.toList());
     } catch (Exception e) {
       log.error("Parsing jokes has an error ", e);
-    }
-    finally{
+    } finally {
       response.close();
     }
 
     return Collections.emptyList();
+  }
+
+  private boolean filterFullMatchOfKeyWord(String keyword, String data) {
+    return Pattern.compile(keyword).matcher(data).find();
   }
 }

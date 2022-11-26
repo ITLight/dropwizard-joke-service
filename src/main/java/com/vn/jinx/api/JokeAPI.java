@@ -1,7 +1,6 @@
 package com.vn.jinx.api;
 
-import com.vn.jinx.api.enumeration.ResponseEnum;
-import java.util.List;
+import com.vn.jinx.enumeration.ResponseEnum;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
@@ -12,9 +11,9 @@ public class JokeAPI {
   private final int code;
   private final String message;
   private String searchText;
-  private List<Object> data;
+  private Object data;
 
-  public JokeAPI(String searchText, List<Object> data) {
+  public JokeAPI(String searchText, Object data) {
     this.code = ResponseEnum.SUCCESS.getCode();
     this.message = ResponseEnum.SUCCESS.getMessage();
     this.searchText = searchText;

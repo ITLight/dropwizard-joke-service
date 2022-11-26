@@ -1,7 +1,7 @@
 package com.vn.jinx.resources;
 
 import com.vn.jinx.api.JokeAPI;
-import com.vn.jinx.api.enumeration.ResponseEnum;
+import com.vn.jinx.enumeration.ResponseEnum;
 import com.vn.jinx.service.JokeService;
 import com.vn.jinx.util.JsonUtils;
 import java.util.List;
@@ -35,7 +35,7 @@ public class JokeResource {
             .entity(new JokeAPI(ResponseEnum.INVALID_SEARCH_TEXT, search))
             .build();
 
-      List<Object> data = jokeService.fetchJoke(JsonUtils.encodeURI(search));
+      List<String> data = jokeService.fetchJoke(JsonUtils.encodeURI(search));
       res = new JokeAPI(search, data);
     } catch (Exception e) {
       log.error("Error while fetching jokes from {}, ex:", search, e);

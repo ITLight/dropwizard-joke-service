@@ -28,21 +28,32 @@ public class JApplication extends Application<JApplicationConfiguration> {
 
   @Override
   public void initialize(Bootstrap<JApplicationConfiguration> bootstrap) {
+    super.initialize(bootstrap);
   }
 
   @Override
   public void run(JApplicationConfiguration jApplicationConfiguration, Environment environment) {
-    environment.healthChecks().register("jinx-joke-service", new HealthCheck() {
-      @Override
-      protected Result check() {
-        return Result.healthy();
-      }
-    });
+    environment
+        .healthChecks()
+        .register(
+            getName(),
+            new HealthCheck() {
+              @Override
+              protected Result check() {
+                return Result.healthy();
+              }
+            });
 
-    environment.jersey().register(new RateLimitFilter(new RateLimitService()));
+    environment
+        .jersey()
+        .register(
+            new RateLimitFilter(new RateLimitService(jApplicationConfiguration.getRateLimit())));
 
     final CloseableHttpClient client = new HttpClientBuilder(environment).build(getName());
 
-    environment.jersey().register(new JokeResource(new JokeService(client)));
+    environment
+        .jersey()
+        .register(
+            new JokeResource(new JokeService(jApplicationConfiguration.getQueryURL(), client)));
   }
 }

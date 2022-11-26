@@ -1,5 +1,6 @@
 package com.vn.jinx;
 
+import com.vn.jinx.dto.RateLimitConfigDTO;
 import io.dropwizard.Configuration;
 import javax.validation.constraints.NotEmpty;
 import lombok.Getter;
@@ -9,10 +10,8 @@ import lombok.Setter;
 @Setter
 public class JApplicationConfiguration extends Configuration {
 
-  @NotEmpty
-  private String template;
+  private String queryURL;
 
-  @NotEmpty
-  private String defaultName = "Stranger";
+  private RateLimitConfigDTO rateLimit;
 
 }

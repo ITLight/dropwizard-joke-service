@@ -1,4 +1,4 @@
-package com.vn.jinx.api.enumeration;
+package com.vn.jinx.enumeration;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

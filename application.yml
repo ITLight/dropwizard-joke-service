@@ -1,7 +1,10 @@
-template: finx
-defaultName: ${DW_DEFAULT_NAME:-Stranger}
-
 server:
   type: simple
   rootPath: /api
   applicationContextPath: /
+
+queryURL: https://api.chucknorris.io/jokes/search?query=
+
+rateLimit:
+  requests: 5
+  timeLimitMinute: 1

@@ -1,7 +1,7 @@
 package com.vn.jinx.filter;
 
 import com.vn.jinx.api.JokeAPI;
-import com.vn.jinx.api.enumeration.ResponseEnum;
+import com.vn.jinx.enumeration.ResponseEnum;
 import com.vn.jinx.service.RateLimitService;
 import com.vn.jinx.util.JsonUtils;
 import javax.servlet.http.HttpServletRequest;
@@ -11,8 +11,6 @@ import javax.ws.rs.container.ResourceInfo;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.io.IOException;
-import java.lang.reflect.Method;
 import javax.ws.rs.core.Response.Status;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
