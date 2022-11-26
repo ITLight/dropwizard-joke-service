@@ -19,3 +19,14 @@
     "searchText":"abc",
     "data":["Chuck Norris is not as smart as Einstein. It is impossible for Einstein to arrange M&M's in abc order but Chuck Norris can."]
   }
+```
+
+--> Rate limited
+```yaml
+  {
+    "code":-1,
+    "message":"Too many requests. Only 5 request per one minute",
+    "searchText":"abc",
+    "data":null
+  }
+```
