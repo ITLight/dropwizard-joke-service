@@ -6,6 +6,8 @@
 
 * ### Testing 
   curl --location --request GET 'http://localhost:8080/api/v1/joke?search=abc'
+  
+* ### Note: the rate limit service is running well with one instant. Need to store bucket4j map to a centralize database like hazelcast, redission when scaling out for more instants.
 
 * ### Example
 
